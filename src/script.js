@@ -1,36 +1,33 @@
+
+
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
-
+import { OBJLoader } from 'three/examples/jsm/Loaders/OBJLoader.js'
+import Slicer from 'threejs-slice-geometry/src/slice.js'
+			const ZOOM_RATE = 0.5
 // Debug
 const gui = new dat.GUI()
-
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
-// Scene
-const scene = new THREE.Scene()
 
-// Objects
-const geometry = new THREE.TorusGeometry( .7, .2, 16, 100 );
-
-// Materials
-
-const material = new THREE.MeshBasicMaterial()
-material.color = new THREE.Color(0xff0000)
-
-// Mesh
-const sphere = new THREE.Mesh(geometry,material)
-scene.add(sphere)
+const scene = new THREE.Scene();
 
 // Lights
 
-const pointLight = new THREE.PointLight(0xffffff, 0.1)
+const pointLight = new THREE.PointLight(0xffffff, 1)
 pointLight.position.x = 2
 pointLight.position.y = 3
 pointLight.position.z = 4
 scene.add(pointLight)
+const pointLightBack = new THREE.PointLight(0xffffff, 1)
+pointLightBack.position.x = -2
+pointLightBack.position.y = -3
+pointLightBack.position.z = -4
+scene.add(pointLightBack)
+
 
 /**
  * Sizes
@@ -59,11 +56,12 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
-camera.position.y = 0
-camera.position.z = 2
+
+
+const camera = new THREE.PerspectiveCamera( 36, sizes.width / sizes.height, 0.25, 16 );
+camera.position.set( 0, 0, 11 );
 scene.add(camera)
+
 
 // Controls
 // const controls = new OrbitControls(camera, canvas)
@@ -75,31 +73,133 @@ scene.add(camera)
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
+renderer.localClippingEnabled = true;
+
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-/**
- * Animate
- */
+
+const controls = new OrbitControls( camera, renderer.domElement );
+
+
+
+
+// instantiate a loader
+const loader = new OBJLoader();
+let status = document.getElementById("status");
+// load a resource
+
+
+loader.load(
+	// resource URL
+	'http://127.0.0.1:8887/model.obj',
+	// called when resource is loaded
+	
+	function ( object ) {
+		console.log('Loaded');
+		console.log(object.children[0].geometry)
+
+		object.scale.multiplyScalar(10);
+		scene.add(object)
+		let prostetic ; 
+		let demo ;
+
+			renderer.render(scene,camera);
+			function tick(){
+					const elapsedTime = clock.getElapsedTime()
+
+					// Update objects
+					object.rotation.y = .5 * elapsedTime
+					if( prostetic){
+						prostetic.rotation.y =  .5 * elapsedTime ;
+					}
+					// Update Orbital Controls
+					// controls.update()
+
+					// Render
+					renderer.render(scene, camera)
+
+					// Call tick again on the next frame
+					window.requestAnimationFrame(tick)
+			}
+			tick();
+
+			document.getElementById("fit").addEventListener('click',()=>{
+				object.rotation.y = 0
+				prostetic = object.clone();
+			   var Uplane = new THREE.Plane(new THREE.Vector3(0,-1,0), 0.3)
+			   var Dplane = new THREE.Plane(new THREE.Vector3(0,1,0), 1.9)
+				   prostetic.scale.multiplyScalar(1.1)
+				   let prosteticMaterial = new THREE.MeshPhongMaterial({
+					   color : (0x67C1E8),
+					   clippingPlanes: [Dplane,Uplane],
+					   clipShadows: true
+				   })
+				   prostetic.traverse((child)=>{
+					   if(child instanceof THREE.Mesh){
+						   child.material = prosteticMaterial
+					   }
+				   })
+					demo = prostetic.clone();
+				   demo.translateX(3)
+				   scene.add(demo);
+				   scene.add(prostetic)
+				   renderer.render(scene,camera);
+		   })
+		   
+		
+
+	},	
+	// called when loading is in progresses
+	function ( xhr ) {
+		status.textContent = (xhr.loaded / xhr.total * 100 ).toFixed(1)
+
+	},
+	// called when loading has errors
+	function ( error ) {
+
+		console.log( error );
+
+	}
+);
 
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
 
-    const elapsedTime = clock.getElapsedTime()
 
-    // Update objects
-    sphere.rotation.y = .5 * elapsedTime
 
-    // Update Orbital Controls
-    // controls.update()
+function events() {
+	document.getElementById("zoomIn").addEventListener('click',(e)=>{
+		camera.position.z -= ZOOM_RATE;
+		renderer.render(scene,camera)
 
-    // Render
-    renderer.render(scene, camera)
+	})
+	document.getElementById("zoomOut").addEventListener('click',(e)=>{
+		camera.position.z += ZOOM_RATE ;
+		renderer.render(scene,camera)
 
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+	})
+	document.getElementById("left").addEventListener('click',(e)=>{
+		camera.position.x -= ZOOM_RATE ;
+		renderer.render(scene,camera)
+
+	})
+	document.getElementById("right").addEventListener('click',(e)=>{
+		camera.position.x += ZOOM_RATE ;
+		renderer.render(scene,camera)
+
+	})
+	document.getElementById("up").addEventListener('click',(e)=>{
+		camera.position.y += ZOOM_RATE ;
+		renderer.render(scene,camera)
+
+	})
+	document.getElementById("down").addEventListener('click',(e)=>{
+		camera.position.y -= ZOOM_RATE ;
+		renderer.render(scene,camera)
+	})
+
 }
 
-tick()
+events();
+

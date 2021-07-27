@@ -1,20 +1,51 @@
-*
-{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 
 html,
-body
-{
-    height: 100vh;
-    font-family: 'Poppins';
+body {
+  height: 100vh;
+  font-family: "Poppins";
 }
 
-.webgl
-{
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+.controls {
+  position: absolute;
+  left: 80vw;
+  top: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.controls button {
+  margin: 5px 5px;
+  width: 3vw;
+  height: 5vh;
+  background: none;
+  border: 1px solid white;
+  border-radius: 12px;
+  color: white;
+  font-size: 1vw;
+  cursor: pointer;
+}
+#fit {
+  width: 5vw;
+}
+
+#prompt {
+  position: absolute;
+  right: 9vw;
+  top: 3vw;
+  color: #bdbdbd;
+}
+#status {
+  font-size: 22px;
+  font-family: "Quicksand";
 }

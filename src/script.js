@@ -6,6 +6,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { OBJLoader } from 'three/examples/jsm/Loaders/OBJLoader.js'
 import Slicer from 'threejs-slice-geometry/src/slice.js'
+import { BufferGeometry,Float32BufferAttribute } from 'three'
 			const ZOOM_RATE = 0.5
 // Debug
 const gui = new dat.GUI()
@@ -73,6 +74,7 @@ scene.add(camera)
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
+
 renderer.localClippingEnabled = true;
 
 renderer.setSize(sizes.width, sizes.height)
@@ -95,11 +97,38 @@ loader.load(
 	'http://127.0.0.1:8887/model.obj',
 	// called when resource is loaded
 	
-	function ( object ) {
-		console.log('Loaded');
-		console.log(object.children[0].geometry)
+	function (object) {
+		let objectGeometry = object.children[0].geometry;
+		console.log(objectGeometry)
+		const g = new THREE.BufferGeometry();
+	
+		
+		let vertices = objectGeometry.attributes.position.array.slice(0, 6025571)
+		console.log(vertices.length);
+		let filtered = []
+		for (let i = 0; i < vertices.length; i++) {
+			let index = i * 9
+			if ((vertices[index + 1] > -0.2) && (vertices [index+1] < 0.02)){
+				filtered.push(...vertices.slice(index, index + 9))
+			}
+		}
 
+		g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(filtered), 3));
+
+		const m = new THREE.MeshPhongMaterial({
+			color: 0xFFFFFF,    // red (can also use a CSS color string here)
+			flatShading: true,
+		});
+		const mesh = new THREE.Mesh(g, m);
+		mesh.scale.multiplyScalar(10);
+		scene.add(mesh)
+		renderer.render(scene,camera)
+		
+
+	
+			
 		object.scale.multiplyScalar(10);
+		object.translateX(2)
 		scene.add(object)
 		let prostetic ; 
 		let demo ;
@@ -114,7 +143,7 @@ loader.load(
 						prostetic.rotation.y =  .5 * elapsedTime ;
 					}
 					// Update Orbital Controls
-					// controls.update()
+					 controls.update()
 
 					// Render
 					renderer.render(scene, camera)
@@ -124,12 +153,15 @@ loader.load(
 			}
 			tick();
 
-			document.getElementById("fit").addEventListener('click',()=>{
-				object.rotation.y = 0
+		document.getElementById("fit").addEventListener('click', () => {
+				
+			object.rotation.y = 0
+			
 				prostetic = object.clone();
 			   var Uplane = new THREE.Plane(new THREE.Vector3(0,-1,0), 0.3)
 			   var Dplane = new THREE.Plane(new THREE.Vector3(0,1,0), 1.9)
-				   prostetic.scale.multiplyScalar(1.1)
+			prostetic.scale.multiplyScalar(1.1)
+			
 				   let prosteticMaterial = new THREE.MeshPhongMaterial({
 					   color : (0x67C1E8),
 					   clippingPlanes: [Dplane,Uplane],
@@ -142,12 +174,13 @@ loader.load(
 				   })
 					demo = prostetic.clone();
 				   demo.translateX(3)
-				   scene.add(demo);
+			scene.add(demo);
+			console.log(prostetic.children[0].geometry.attributes.position.array.length)
 				   scene.add(prostetic)
 				   renderer.render(scene,camera);
 		   })
 		   
-		
+		tick();
 
 	},	
 	// called when loading is in progresses

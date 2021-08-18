@@ -1,6 +1,7 @@
 //SET AND FORGET
 import * as dat from 'dat.gui'
 import * as THREE from 'three'
+import { CubeTexture } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 
@@ -10,6 +11,9 @@ export default function init() {
     // Canvas
     const canvas = document.querySelector('canvas.webgl')
     const scene = new THREE.Scene();
+    
+
+    scene.background = CubeTexture
 
     // Lights
 
@@ -53,7 +57,7 @@ export default function init() {
 
     // CAMERA
     const camera = new THREE.PerspectiveCamera( 36, sizes.width / sizes.height, 0.25, 16 );
-    camera.position.set( 0, 0, 11 );
+    camera.position.set( 1, 0, 2 );
     scene.add(camera)
 
 
@@ -68,15 +72,40 @@ export default function init() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
     // CONTROLS 
-    const controls = new OrbitControls( camera, renderer.domElement );
+    const controls = new OrbitControls(camera, renderer.domElement);
+
+
+    // AXIS X Y Z
+
+        const dirX = new THREE.Vector3(1, 0, 0);
+        const dirY = new THREE.Vector3( 0, 1, 0 );
+        const dirZ = new THREE.Vector3( 0, 0, 1 );
+
+
+        var origin = new THREE.Vector3( -1 , 0, -1 );
+        const length = 0.5
+
+        const arrowX = new THREE.ArrowHelper(dirX, origin, length, 0x3498DB);
+        const arrowY = new THREE.ArrowHelper( dirY, origin, length, 0x27AE60 );
+        const arrowZ = new THREE.ArrowHelper( dirZ, origin, length, 0xC0392B );
+
+        scene.add( arrowX );
+        scene.add( arrowY );
+        scene.add( arrowZ );
+    
 
     const gui = new dat.GUI()
     const lighFolder = gui.addFolder('Point Light')
-    lighFolder.add(pointLight.position, 'x', -10, 10)
+
+    lighFolder.add(camera.position, 'x', -10, 10)
     lighFolder.add(pointLight.position, 'y', -10,  10)
     lighFolder.add(pointLight.position, 'z', -10, 10)
     lighFolder.add(pointLight,'intensity', 0,1)
     lighFolder.open()
+
+    const axisOrigin = gui.addFolder('Axis')
+    axisOrigin.add(origin,'x',-5,5)
+    
 
     
     return {

@@ -15,38 +15,51 @@ body {
 	left: 0;
 	outline: none;
 }
-.controls {
+#ops {
 	position: absolute;
-	left: 80vw;
-	top: 75vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	right: 5vw;
+	bottom: 5vw;
 }
-.controls button {
-	margin: 5px 5px;
-	width: fit-content;
-	min-width: 3em;
-	height: 3em;
+#ops button {
 	background: none;
-	border: 1px solid white;
-	border-radius: 12px;
+	border: none;
+	border-bottom: 1px solid #bdbdbd;
+	font-size: 14px;
+	font-family: "Quicksand";
 	color: white;
-	font-size: 1vw;
 	cursor: pointer;
+	padding: 2px;
 }
 #fit {
 	width: 5vw;
 }
 
-#prompt {
-	position: absolute;
-	right: 9vw;
-	top: 3vw;
-	color: #bdbdbd;
-}
 #status {
+	color: white;
 	font-size: 22px;
 	font-family: "Quicksand";
+}
+
+#axisGuide {
+	position: absolute;
+	bottom: 5px;
+	left: 5vw;
+	display: inline-flex;
+	flex-direction: row;
+	color: white;
+}
+#axisGuide h1 {
+	font-size: 12px;
+	font-family: "Quicksand";
+	padding: 2px;
+	margin: 1vw;
+}
+#z {
+	color: #c0392b;
+}
+#x {
+	color: #3498db;
+}
+#y {
+	color: #27ae60;
 }

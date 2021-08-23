@@ -5,6 +5,13 @@ import { CubeTexture } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 
+var params = {
+    arrowsLength: 0.5,
+    arrowsOrigin : new THREE.Vector3( -1 , 0, -1 )
+}
+
+
+
 export default function init() {
 
 
@@ -75,24 +82,29 @@ export default function init() {
     const controls = new OrbitControls(camera, renderer.domElement);
 
 
-    // AXIS X Y Z
+    // HELPER AXIS X Y Z
 
         const dirX = new THREE.Vector3(1, 0, 0);
         const dirY = new THREE.Vector3( 0, 1, 0 );
         const dirZ = new THREE.Vector3( 0, 0, 1 );
 
 
-        var origin = new THREE.Vector3( -1 , 0, -1 );
-        const length = 0.5
 
-        const arrowX = new THREE.ArrowHelper(dirX, origin, length, 0x3498DB);
-        const arrowY = new THREE.ArrowHelper( dirY, origin, length, 0x27AE60 );
-        const arrowZ = new THREE.ArrowHelper( dirZ, origin, length, 0xC0392B );
+        const arrowX = new THREE.ArrowHelper(dirX, params.arrowsOrigin, params.arrowsLength, 0x3498DB);
+        const arrowY = new THREE.ArrowHelper( dirY, params.arrowsOrigin, params.arrowsLength, 0x27AE60 );
+        const arrowZ = new THREE.ArrowHelper( dirZ, params.arrowsOrigin, params.arrowsLength, 0xC0392B );
 
         scene.add( arrowX );
         scene.add( arrowY );
         scene.add( arrowZ );
     
+    
+    
+     function set(attribute, value) {
+        params[attribute] = value;
+    }
+       
+
 
     const gui = new dat.GUI()
     const lighFolder = gui.addFolder('Point Light')
@@ -103,11 +115,12 @@ export default function init() {
     lighFolder.add(pointLight,'intensity', 0,1)
     lighFolder.open()
 
-    const axisOrigin = gui.addFolder('Axis')
-    axisOrigin.add(origin,'x',-5,5)
-    
 
-    
+   
+
+
+
+
     return {
         scene: scene,
         renderer: renderer,

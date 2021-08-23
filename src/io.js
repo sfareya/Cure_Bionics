@@ -5,7 +5,7 @@ import { OBJLoader } from 'three/examples/jsm/Loaders/OBJLoader.js'
 // instantiate a loader
 const loader = new OBJLoader();
 const status = document.getElementById('status')
-
+console.log(status)
 
 export async function loadOBJ(SOURCE_URL,callback) {
     // load a resource

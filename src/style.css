@@ -33,10 +33,14 @@ body {
 #fit {
 	width: 5vw;
 }
-
+#prompt {
+	position: absolute;
+	bottom: 40px;
+	left: 8vw;
+}
 #status {
 	color: white;
-	font-size: 22px;
+	font-size: 20px;
 	font-family: "Quicksand";
 }
 

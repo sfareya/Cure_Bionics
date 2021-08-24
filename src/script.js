@@ -58,7 +58,7 @@ document.getElementById("slice").addEventListener('click', () => {
 
 
 	mold = new THREE.Mesh(moldGeometry, m)
-	
+
 	scene.add(mold)
 
 })
@@ -84,11 +84,16 @@ document.getElementById("engrave").addEventListener('click', () => {
 
 
 	//SUBSTRACTION CSG	
+	console.time('runtime')
 	var final = CSG.subtract(cylinder, mold);
 	final.translateX(0.5)
 	scene.add(final)
 
-	console.log('rendered')
+	console.timeEnd('runtime')
+
+
+
+	console.log('Rendering Complete')
 	
 })
 

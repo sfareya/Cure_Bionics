@@ -45,7 +45,8 @@ var arm;
 
 var mold;
 
-document.getElementById("slice").addEventListener('click', () => {
+
+function sliceGeometry() {
 
 	let objectGeometry = arm.children[0].geometry;
 
@@ -60,43 +61,50 @@ document.getElementById("slice").addEventListener('click', () => {
 	mold = new THREE.Mesh(moldGeometry, m)
 
 	scene.add(mold)
+	
+}
 
-})
-
+function engrave() {
+		/* Cylinder */
+	
+		let cylinderG = new THREE.CylinderBufferGeometry(0.07, 0.04, 0.19, 100, 10, false);
+	
+		let cylinder = new THREE.Mesh(cylinderG, m);
+	
+		cylinder.translateOnAxis(new THREE.Vector3(0,-1,0),0.09)
+		cylinder.translateOnAxis(new THREE.Vector3(0,0,-1),0.02)
+	
+		scene.add(cylinder)
+	
+	
+		cylinder.updateMatrix();
+		mold.updateMatrix();
+	
+	
+		//SUBSTRACTION CSG	
+		console.time('runtime')
+		var final = CSG.subtract(cylinder, mold);
+		final.translateX(0.5)
+		scene.add(final)
+	
+		console.timeEnd('runtime')
+	
+	
+	
+		console.log('Rendering Complete')
+}
 
 document.getElementById("engrave").addEventListener('click', () => {
 	
-	
-	/* Cylinder */
-	
-	let cylinderG = new THREE.CylinderBufferGeometry(0.07, 0.04, 0.19, 100, 10, false);
-	
-	let cylinder = new THREE.Mesh(cylinderG, m);
+	engrave();
 
-	cylinder.translateOnAxis(new THREE.Vector3(0,-1,0),0.09)
-	cylinder.translateOnAxis(new THREE.Vector3(0,0,-1),0.02)
-
-	scene.add(cylinder)
-
-
-	cylinder.updateMatrix();
-	mold.updateMatrix();
-
-
-	//SUBSTRACTION CSG	
-	console.time('runtime')
-	var final = CSG.subtract(cylinder, mold);
-	final.translateX(0.5)
-	scene.add(final)
-
-	console.timeEnd('runtime')
-
-
-
-	console.log('Rendering Complete')
 	
 })
 
+
+document.getElementById("slice").addEventListener('click', () => {
+	slice();
+})
 
 
  

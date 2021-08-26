@@ -1,4 +1,11 @@
 .signup {
+	img {
+		position: absolute;
+		left: -5vw;
+		top: -9vh;
+		width: 30vw;
+		height: 30vh;
+	}
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -6,15 +13,18 @@
 	font-family: "Quicksand";
 	h1 {
 		text-transform: uppercase;
-		letter-spacing: 7px;
+		letter-spacing: 10px;
 		margin-top: 10vh;
-		margin-bottom: 10vh;
+		margin-bottom: 5vh;
 		font-size: 48px;
 		color: #ffffff;
 	}
 	h2 {
 		color: white;
-		font-size: 32px;
+		font-size: 36px;
+		letter-spacing: 4px;
+
+		margin-bottom: 5vh;
 	}
 
 	form {
@@ -33,6 +43,7 @@
 		align-items: center;
 	}
 	input {
+		outline: none;
 		border: none;
 		border-bottom: 2px solid #000000;
 		margin: 2vh;
@@ -42,6 +53,10 @@
 		font-size: 16px;
 	}
 	button {
+		display: inline-flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
 		cursor: pointer;
 		border: none;
 		background-color: rgb(35, 35, 189);
@@ -52,5 +67,8 @@
 		font-size: 16px;
 		margin-top: 2vh;
 		margin-left: 30vw;
+		span {
+			font-size: 16px;
+		}
 	}
 }

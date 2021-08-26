@@ -1,89 +1,56 @@
 .signup {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-family: "Quicksand";
+	h1 {
+		text-transform: uppercase;
+		letter-spacing: 7px;
+		margin-top: 10vh;
+		margin-bottom: 10vh;
+		font-size: 48px;
+		color: #ffffff;
+	}
+	h2 {
+		color: white;
+		font-size: 32px;
+	}
 
-    h1 {
-        margin-bottom: 40px;
-        font-size: 38px;
-    }
-
-    h2 {
-        margin-bottom: 10px;
-        font-size: 25px;
-    }
-
-    .form {
-
-        padding: 30px 100px;
-        border-radius: 20px;
-        background-color: rgba(199, 198, 198, 0.6);
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin-bottom: 20px;
-
-        h1 {
-            font-size: 38px;
-            font-weight: 900;
-            margin-bottom: 10px;
-        }
-
-        h4 {
-            color: red;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-
-            label {
-                font-weight: 300;
-            }
-
-            input[type=text] {
-                width: 60%;
-                padding: 12px 20px;
-                box-sizing: border-box;
-                border: none;
-                border-radius: 15px;
-                background-color: rgb(255, 249, 249);
-                color: rgb(10, 10, 10);
-            }
-
-            input[type=password] {
-                width: 60%;
-                padding: 12px 20px;
-                box-sizing: border-box;
-                border: none;
-                border-radius: 15px;
-                background-color: rgb(255, 249, 249);
-                color: rgb(10, 10, 10);
-            }
-        }
-
-        .login {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-items: center;
-
-            Button {
-                margin-top: 70px;
-                margin-bottom: 20px;
-                height: 60px;
-                width: 100px;
-                border-radius: 30px;
-                padding: 0px 100px;
-            }
-
-            span {
-                font-size: small;
-                color: black;
-            }
-        }
-    }
+	form {
+		h1 {
+			color: black;
+			font-size: 22px;
+			margin-top: 7vh;
+			margin-bottom: 3vh;
+		}
+		display: flex;
+		flex-direction: column;
+		height: 400px;
+		width: 550px;
+		border-radius: 12px;
+		background-color: #ffffff;
+		align-items: center;
+	}
+	input {
+		border: none;
+		border-bottom: 2px solid #000000;
+		margin: 2vh;
+		width: 25vw;
+		height: 4vh;
+		color: black;
+		font-size: 16px;
+	}
+	button {
+		cursor: pointer;
+		border: none;
+		background-color: rgb(35, 35, 189);
+		color: white;
+		border-radius: 12px;
+		height: 7vh;
+		width: 7vw;
+		font-size: 16px;
+		margin-top: 2vh;
+		margin-left: 30vw;
+	}
 }
